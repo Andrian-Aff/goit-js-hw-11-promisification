@@ -9,24 +9,44 @@ const users = [
   { name: 'Lux', active: false },
 ];
 
-const toggleUserState = (allUsers, userName, callback) => {
-  const updatedUsers = allUsers.map(user =>
-    user.name === userName ? { ...user, active: !user.active } : user,
-  );
-
-  callback(updatedUsers);
+const toggleUserState = (allUsers, userName) => {
+    return new Promise((resolve, reject) => {
+     allUsers.map(user => {
+    if(user.name === userName) {
+        resolve({ ...user, active: !user.active });
+    }
+        reject(user);
+    });
+});
 };
+  
+ 
+toggleUserState().then(logger).catch(()=>console.log('все прорпало'));
 
-const logger = updatedUsers => console.table(updatedUsers);
+  function logger(result) {
+      console.table(result)
+    };
+
+console.log(toggleUserState(users, 'Mango').then(logger));
+console.log(toggleUserState(users, 'Lux').then(logger));
+// const toggleUserState = (allUsers, userName, callback) => {
+//   const updatedUsers = allUsers.map(user =>
+//     user.name === userName ? { ...user, active: !user.active } : user,
+//   );
+
+//   callback(updatedUsers);
+// };
+
+// const logger = updatedUsers => console.table(updatedUsers);
 
 /*
  * Сейчас работает так
  */
-toggleUserState(users, 'Mango', logger);
-toggleUserState(users, 'Lux', logger);
+// toggleUserState(users, 'Mango', logger);
+// toggleUserState(users, 'Lux', logger);
 
-/*
- * Должно работать так
- */
-toggleUserState(users, 'Mango').then(logger);
-toggleUserState(users, 'Lux').then(logger);
+// /*
+//  * Должно работать так
+//  */
+// toggleUserState(users, 'Mango').then(logger);
+// toggleUserState(users, 'Lux').then(logger);
